@@ -8,6 +8,11 @@ import { useState, useEffect } from "react";
 
 const Home: NextPage = () => {
   const [result, setResult] = useState(["Loading", "Loading", "Loading"]);
+
+  const [one, setOne] = useState("Loading");
+  const [two, setTwo] = useState("Loading");
+  const [three, setThree] = useState("Loading");
+
   const [user, setUser] = useState({ id: "", name: "", credits: 0 });
   const [loading, setLoading] = useState(true);
 
@@ -17,7 +22,7 @@ const Home: NextPage = () => {
   }
 
   const handleSpin = () => {
-    spin(user, setResult, setUser);
+    spin(user, setUser, setOne, setTwo, setThree);
     setResult(["Loading", "Loading", "Loading"]);
   };
 
@@ -68,7 +73,7 @@ const Home: NextPage = () => {
           alignItems: "center",
         }}
       >
-        <TableSlots rows={result} />
+        <TableSlots one={one} two={two} three={three} />
         {!user.credits && "NO CREDITS"}
       </Container>
       <Container

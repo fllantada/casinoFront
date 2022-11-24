@@ -15,13 +15,27 @@ export async function newGame(
   setUser(response.data);
 }
 
-export async function spin(user: { id: string }, setResult: any, setUser: any) {
+export async function spin(
+  user: { id: string },
+  setUser: any,
+  setOne: any,
+  setTwo: any,
+  setThree: any
+): Promise<any> {
   const { id } = user;
   const { data } = await axios.get(
     `https://casinoserver-production.up.railway.app/game/play/${id}`
   );
+  setOne("Spining");
+  setTwo("Spining");
+  setThree("Spining");
+  await Delay(1000);
+  await setOne(data.playResults[0]);
+  await Delay(1000);
+  await setTwo(data.playResults[1]);
+  await Delay(1000);
+  await setThree(data.playResults[2]);
 
-  setResult(data.playResults);
   setUser(data.player);
 }
 
@@ -40,3 +54,6 @@ export async function checkout(id: string) {
   );
   return response.data;
 }
+//set remote url github ?
+
+const Delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
