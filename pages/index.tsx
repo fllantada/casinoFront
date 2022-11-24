@@ -1,19 +1,24 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { Button, Grid, Paper, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import TableSlots from "../components/TableSlots";
-import { Style } from "@mui/icons-material";
-import { useState } from "react";
+import { newGame, spin, checkout, buy } from "../services/callapi";
+
+import { useState, useEffect } from "react";
 
 const Home: NextPage = () => {
   const [result, setResult] = useState(["Loading", "Loading", "Loading"]);
+  const [user, setUser] = useState({ id: "", name: "", credits: 0 });
+  const [loading, setLoading] = useState(true);
 
-  const spin = () => {
-    console.log("spin");
-    //callApi();
+  if (loading) {
+    newGame({ id: "1", name: "fran" }, setUser);
+    setLoading(false);
+  }
+
+  const handleSpin = () => {
+    spin(user, setResult, setUser);
+    setResult(["Loading", "Loading", "Loading"]);
   };
 
   return (
@@ -21,7 +26,7 @@ const Home: NextPage = () => {
       <Container
         maxWidth='lg'
         sx={{
-          margin: "80px 80px",
+          margin: "40px 80px",
           height: "50px",
           display: "flex",
           flexDirection: "column",
@@ -33,20 +38,58 @@ const Home: NextPage = () => {
           Front Casino Challenge
         </Typography>
       </Container>
+      <Container
+        sx={{
+          margin: "40px 80px",
+          height: "40px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        Credts: {user.credits}
+        <Button
+          onClick={() => {
+            buy(user, setUser);
+          }}
+        >
+          Buy 1000 more
+        </Button>
+      </Container>
 
-      <Grid item xs={12} sm={12}>
+      <Container
+        sx={{
+          margin: "40px 80px",
+          height: "400px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <TableSlots rows={result} />
-      </Grid>
-      <Grid alignItems={"center"} item xs={12} sm={12}>
+        {!user.credits && "NO CREDITS"}
+      </Container>
+      <Container
+        sx={{
+          margin: "40px 80px",
+          height: "50px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
         <Button
           variant='contained'
           color='primary'
-          sx={{ width: "70%" }}
-          onClick={spin}
+          sx={{ width: "100%" }}
+          onClick={handleSpin}
         >
-          Register
+          SPIN
         </Button>
-      </Grid>
+      </Container>
     </>
   );
 };
