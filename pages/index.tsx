@@ -54,7 +54,7 @@ const Home: NextPage = () => {
             buy(user, setUser);
           }}
         >
-          Buy 1000 more
+          Start New Session
         </Button>
       </Container>
 
